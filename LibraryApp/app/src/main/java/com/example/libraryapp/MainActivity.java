@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView hometxt,libcardtxt,noftxt,profiletxt;
 
-    private FragmentManager fragmentManager;
+    public static FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

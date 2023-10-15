@@ -3,7 +3,7 @@ package com.example.libraryapp.Model;
 public class User {
     private int id;
     private String loginname,username,email,password,role,avatar;
-    private Boolean isMale;
+    private boolean isMale;
 
     public User() {
     }
@@ -14,7 +14,7 @@ public class User {
         this.avatar = avatar;
     }
 
-    public User(int id, String loginname, String username, String email, String password, String role, String avatar, Boolean isMale) {
+    public User(int id, String loginname, String username, String email, String password, String role, String avatar, boolean isMale) {
         this.id = id;
         this.loginname = loginname;
         this.username = username;
@@ -81,11 +81,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public Boolean getMale() {
+    public boolean getMale() {
         return isMale;
     }
 
-    public void setMale(Boolean male) {
+    public void setMale(boolean male) {
         isMale = male;
     }
 }

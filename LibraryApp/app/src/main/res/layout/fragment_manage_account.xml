@@ -12,21 +12,33 @@
         android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingBottom="150dp"
         android:layout_height="match_parent">
-
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/fragadminmngacc_titlelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/fragadminmngacc_title"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="22dp"
+            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:fontFamily="@font/poppinsbold"
             android:text="ACCOUNT MANAGING"
-            android:textSize="25sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:textSize="25sp" />
+        <ImageButton
+            android:layout_marginRight="22dp"
+            android:layout_alignParentRight="true"
+            android:elevation="10dp"
+            android:backgroundTint="@color/high_blue"
+            android:background="@drawable/round_profile"
+            android:src="@drawable/add"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        </RelativeLayout>
         <androidx.appcompat.widget.SearchView
             android:id="@+id/fragadminmngacc_searchview"
             android:layout_width="match_parent"
@@ -36,7 +48,7 @@
             android:elevation="5dp"
             android:padding="5dp"
             app:iconifiedByDefault="false"
-            app:layout_constraintTop_toBottomOf="@id/fragadminmngacc_title"
+            app:layout_constraintTop_toBottomOf="@id/fragadminmngacc_titlelayout"
             app:queryBackground="@color/transparent"
             app:queryHint="Tìm kiếm" />
 
@@ -276,6 +288,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:backgroundTint="@color/high_blue"
                 android:background="@drawable/round_locallib"
                 android:fontFamily="@font/poppinsregular"
                 android:text="Delete" />
@@ -298,4 +311,5 @@
             app:layout_constraintTop_toBottomOf="@id/fragadminmngacc_listacctxt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </FrameLayout>

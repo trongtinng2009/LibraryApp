@@ -4,12 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.libraryapp.Fragment.GuestBookDetailFragment;
+import com.example.libraryapp.MainActivity;
 import com.example.libraryapp.Model.BookOffline;
 import com.example.libraryapp.R;
 
@@ -55,6 +59,7 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public class BookViewHolder extends RecyclerView.ViewHolder
     {
+        ImageButton bookdetailbtn;
         ImageView bookimg;
         TextView booktitle,bookrating;
         public BookViewHolder(@NonNull View itemView) {
@@ -62,6 +67,16 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             bookimg = itemView.findViewById(R.id.book_item_bookimg);
             bookrating = itemView.findViewById(R.id.book_item_bookrating);
             booktitle = itemView.findViewById(R.id.book_item_booktitle);
+            bookdetailbtn = itemView.findViewById(R.id.book_item_detailbtn);
+            bookdetailbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction fragmentTransaction = MainActivity.fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.mainact_fragmentcontainer,new GuestBookDetailFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
         }
     }
 }
