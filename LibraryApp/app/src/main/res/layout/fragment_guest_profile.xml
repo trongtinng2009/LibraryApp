@@ -341,6 +341,7 @@
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fragguestprofile_logout"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

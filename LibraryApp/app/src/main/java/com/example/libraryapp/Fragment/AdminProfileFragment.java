@@ -1,13 +1,18 @@
 package com.example.libraryapp.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.libraryapp.MainActivity;
 import com.example.libraryapp.R;
 
 /**
@@ -25,6 +30,7 @@ public class AdminProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Button logoutbtn;
 
     public AdminProfileFragment() {
         // Required empty public constructor
@@ -62,5 +68,21 @@ public class AdminProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_admin_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+    private void initView(View view)
+    {
+        logoutbtn = view.findViewById(R.id.fragadminprofile_logout);
+        logoutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+                getContext().startActivity(new Intent(getContext(), MainActivity.class));
+            }
+        });
     }
 }

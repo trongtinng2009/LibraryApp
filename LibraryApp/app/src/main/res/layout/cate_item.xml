@@ -2,29 +2,27 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cate_item_bg"
     android:elevation="10dp"
-    android:layout_width="wrap_content"
+    android:layout_width="250dp"
     android:background="@drawable/cate_button"
-    android:layout_height="100dp"
+    android:layout_height="150dp"
     android:layout_margin="10dp">
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_gravity="center"
-        android:id="@+id/cate_item_img"
-        android:background="@color/transparent"
-    android:drawableTop="@drawable/sciencebook"
-        android:paddingTop="20dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-    <TextView
-        android:gravity="center"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:id="@+id/cate_item_txt"
-        android:fontFamily="@font/boris"
-        android:textSize="16sp"
-        android:textColor="@color/black"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:text="Science book"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_margin="10dp"
+            android:id="@+id/cate_item_txt"
+            android:fontFamily="@font/poppinsbold"
+            android:textSize="22sp"
+            android:text="Education"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/cate_item_txt"
+            android:id="@+id/cate_item_img"
+            android:src="@drawable/mentalbook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 </FrameLayout>

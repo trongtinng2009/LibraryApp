@@ -1,6 +1,7 @@
 package com.example.libraryapp.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.example.libraryapp.Fragment.GuestBookDetailFragment;
 import com.example.libraryapp.MainActivity;
 import com.example.libraryapp.Model.BookOffline;
 import com.example.libraryapp.R;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -45,11 +47,23 @@ public class BookAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BookViewHolder bookViewHolder = (BookViewHolder) holder;
         BookOffline book = bookOfflines.get(position);
-        int idimg = context.getResources().getIdentifier(book.getImg(),"drawable",context.getPackageName());
-
-        bookViewHolder.booktitle.setText(book.getTitle());
-        bookViewHolder.bookimg.setImageResource(idimg);
-
+        if(book.getImg_url() != null) {
+            Picasso.get().load(book.getImg_url()).into(bookViewHolder.bookimg);
+        }
+        bookViewHolder.booktitle.setText(book.getName());
+        bookViewHolder.bookdetailbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putSerializable("book",book);
+                GuestBookDetailFragment guestBookDetailFragment = new GuestBookDetailFragment();
+                FragmentTransaction trans = MainActivity.fragmentManager.beginTransaction();
+                guestBookDetailFragment.setArguments(b);
+                trans.replace(R.id.mainact_fragmentcontainer,guestBookDetailFragment);
+                trans.addToBackStack(null);
+                trans.commit();
+            }
+        });
     }
 
     @Override

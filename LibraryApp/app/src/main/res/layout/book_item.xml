@@ -18,7 +18,7 @@
       android:id="@+id/book_item_bookimg"
       android:elevation="40dp"
       android:scaleType="centerCrop"
-      android:src="@drawable/banhoctoilalinhdanhthue"
+      android:src="@drawable/neekoavt"
       app:riv_corner_radius="20dp"
       android:layout_width="match_parent"
       android:layout_height="200dp"/>

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.libraryapp.Fragment.GuestHomeFragment;
+import com.example.libraryapp.Fragment.GuestLibCardFragment;
 import com.example.libraryapp.Fragment.GuestProfileFragment;
 import com.example.libraryapp.Model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static User user;
     private GuestHomeFragment guestHomeFragment;
     private GuestProfileFragment guestProfileFragment;
+    private GuestLibCardFragment guestLibCardFragment;
     enum SelectedBtn
     {
         HOME(1),LIBCARD(2),NOF(3),PROFILE(4);
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
+        db = FirebaseFirestore.getInstance();
         initView();
         handleSelected();
         setFragment(new GuestHomeFragment());
@@ -55,9 +58,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        db = FirebaseFirestore.getInstance();
+
         guestHomeFragment = new GuestHomeFragment();
         guestProfileFragment = new GuestProfileFragment();
+        guestLibCardFragment = new GuestLibCardFragment();
     }
 
     private void initView()
@@ -127,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(selectedbtn != SelectedBtn.LIBCARD.value)
                 {
+                    setFragment(guestLibCardFragment);
+
                     hometxt.setVisibility(View.GONE);
                     homeimg.setImageResource(R.drawable.home);
                     homebtn.setBackgroundColor(getResources().getColor(R.color.transparent));

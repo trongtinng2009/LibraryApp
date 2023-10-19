@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,16 @@ import android.view.ViewGroup;
 import com.example.libraryapp.Adapter.BookAdapter;
 import com.example.libraryapp.Adapter.CategoryAdapter;
 import com.example.libraryapp.Adapter.EventAdapter;
+import com.example.libraryapp.MainActivity;
 import com.example.libraryapp.Model.BookOffline;
 import com.example.libraryapp.Model.Category;
 import com.example.libraryapp.Model.Events;
 import com.example.libraryapp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +57,8 @@ public class GuestHomeFragment extends Fragment {
     private ArrayList<BookOffline> bookOfflines;
     private RecyclerView rcvhotcate,rcvnewbook;
     private Handler handler = new Handler();
+    private CollectionReference cateRef = MainActivity.db.collection("Category"),
+            bookOffRef = MainActivity.db.collection("BookOffline");
 
     public GuestHomeFragment() {
         // Required empty public constructor
@@ -99,6 +108,9 @@ public class GuestHomeFragment extends Fragment {
         viewPager2 = view.findViewById(R.id.fragguesthome_eventsslider);
         rcvhotcate = view.findViewById(R.id.fragguesthome_rcvhotcate);
         rcvnewbook = view.findViewById(R.id.fragguesthome_rcvnewbook);
+
+        setCategoryData();
+        setBookOfflineData();
         events = new ArrayList<Events>();
 
         events.add(new Events(R.drawable.sera1));
@@ -106,27 +118,6 @@ public class GuestHomeFragment extends Fragment {
         events.add(new Events(R.drawable.sera3));
         events.add(new Events(R.drawable.sera4));
 
-        bookOfflines = new ArrayList<BookOffline>();
-        bookOfflines.add(new BookOffline("banhoctoilalinhdanhthue","Bạn Học Tôi Là Lính Đánh Thuê",0));
-        bookOfflines.add(new BookOffline("aliceinborderland","Alice In Borderland",0));
-        bookOfflines.add(new BookOffline("signal100","Signal 100",0));
-        bookOfflines.add(new BookOffline("trothanhcuutinhcunhanvatchinh","Trở Thành Cứu Tinh Của Nhân Vật Chính",0));
-        bookOfflines.add(new BookOffline("nguoichoimoicaptoida","Người Chơi Mới Cấp Tối Đa",0));
-        bookOfflines.add(new BookOffline("dangnhapmurim","Đăng Nhập Murim",0));
-
-        rcvnewbook.setAdapter(new BookAdapter(bookOfflines,getContext(),R.layout.book_item));
-        rcvnewbook.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-
-        categories = new ArrayList<Category>();
-        categories.add(new Category("Science Book","sciencebook"));
-        categories.add(new Category("Education Book","edubook"));
-        categories.add(new Category("Manga Book","mangabook"));
-        categories.add(new Category("Mental Book","mentalbook"));
-        categories.add(new Category("Economics Book","economicbook"));
-        categories.add(new Category("Fiction Book","fictionbook"));
-
-        rcvhotcate.setAdapter(new CategoryAdapter(getContext(),categories,R.layout.cate_item));
-        rcvhotcate.setLayoutManager(new GridLayoutManager(getContext(),3));
 
         viewPager2.setAdapter(new EventAdapter(events,R.layout.slide_events,getContext(),viewPager2));
         viewPager2.setClipToPadding(false);
@@ -153,6 +144,57 @@ public class GuestHomeFragment extends Fragment {
                 handler.postDelayed(runnable,2000);
             }
         });
+    }
+    private void setBookOfflineData()
+    {
+        bookOfflines = new ArrayList<BookOffline>();
+        BookAdapter bookAdapter = new BookAdapter(bookOfflines,getContext(),R.layout.book_item);
+        rcvnewbook.setAdapter(bookAdapter);
+        rcvnewbook.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        bookOffRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult())
+                    {
+                        BookOffline bookOffline = queryDocumentSnapshot.toObject(BookOffline.class);
+                        bookOfflines.add(bookOffline);
+                    }
+                    bookAdapter.notifyDataSetChanged();
+                }
+                else
+                {
+                    Log.i("Bookerror","error");
+                }
+            }
+        });
+    }
+    private void setCategoryData()
+    {
+        categories = new ArrayList<Category>();
+        CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(),categories,R.layout.cate_item);
+        rcvhotcate.setAdapter(categoryAdapter);
+        rcvhotcate.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        cateRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+               if(task.isSuccessful())
+               {
+                   for(QueryDocumentSnapshot queryDocumentSnapshot : task.getResult())
+                   {
+                       Category category = queryDocumentSnapshot.toObject(Category.class);
+                       categories.add(category);
+                   }
+                   categoryAdapter.notifyDataSetChanged();
+               }
+               else
+               {
+                   Log.i("Cateerror","error");
+               }
+            }
+        });
+
     }
     private Runnable runnable = new Runnable() {
         @Override

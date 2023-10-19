@@ -143,6 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="3dp"/>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/fragadminprofile_logout"
                     android:textColor="@color/black"
                     android:fontFamily="@font/poppinsregular"
                     android:layout_marginTop="30dp"

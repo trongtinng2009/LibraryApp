@@ -1,15 +1,19 @@
 package com.example.libraryapp.Adapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.libraryapp.Model.Category;
@@ -42,12 +46,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
+        int[] bgcolor = {R.color.pas_cream,R.color.pas_pinkpur,R.color.pas_orange
+        ,R.color.pas_yellow,R.color.pas_pink,R.color.pas_green};
         int imgid = context.getResources().getIdentifier(categories.get(position).getImg(),"drawable",
                 context.getPackageName());
-        Drawable drawable = context.getResources().getDrawable(imgid);
-        drawable.setBounds(0,0,60,60);
-        viewHolder.cate_img.setCompoundDrawables(null,drawable,null,null);
+
+        viewHolder.cate_img.setImageResource(imgid);
         viewHolder.cate_txt.setText(categories.get(position).getName());
+        viewHolder.cate_bg.setBackgroundTintList(ContextCompat.getColorStateList(context,bgcolor[position]));
     }
 
     @Override
@@ -58,7 +64,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         private FrameLayout cate_bg;
-        private Button cate_img;
+        private ImageView cate_img;
         private TextView cate_txt;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

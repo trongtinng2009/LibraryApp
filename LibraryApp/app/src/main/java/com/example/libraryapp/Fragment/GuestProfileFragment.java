@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.libraryapp.Activity.AdminActivity;
+import com.example.libraryapp.Activity.LibrarianActivity;
 import com.example.libraryapp.MainActivity;
 import com.example.libraryapp.Model.User;
 import com.example.libraryapp.R;
@@ -53,7 +54,7 @@ public class GuestProfileFragment extends Fragment {
     private TextView usernametxt;
     private ImageView useravatar;
     private EditText loginnameedt,loginpassedt;
-    private Button loginbtn;
+    private Button loginbtn,logoutbtn;
     private RelativeLayout layoutnoaccount;
     private LinearLayout layouthaveaccount;
     private CollectionReference usercollection = MainActivity.db.collection("User");
@@ -111,6 +112,7 @@ public class GuestProfileFragment extends Fragment {
         loginpassedt = view.findViewById(R.id.fragguestprofile_loginpass);
         layouthaveaccount = view.findViewById(R.id.fragguesthome_haveaccountlayout);
         layoutnoaccount = view.findViewById(R.id.fragguesthome_nothaveaccountlayout);
+        logoutbtn = view.findViewById(R.id.fragguestprofile_logout);
         if(login)
         {
             useravatar.setImageResource(getResources().getIdentifier(MainActivity.user.getAvatar(),
@@ -118,6 +120,13 @@ public class GuestProfileFragment extends Fragment {
             usernametxt.setVisibility(View.VISIBLE);
             usernametxt.setText("Hello " + MainActivity.user.getUsername());
             layouthaveaccount.setVisibility(View.VISIBLE);
+            logoutbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getActivity().finish();
+                    getContext().startActivity(new Intent(getContext(), MainActivity.class));
+                }
+            });
             layoutnoaccount.setVisibility(View.GONE);
         }
     }
@@ -136,15 +145,22 @@ public class GuestProfileFragment extends Fragment {
                       if(task.isSuccessful())
                       {
                           QuerySnapshot documentSnapshot = task.getResult();
-                          Log.i("size",Integer.toString(documentSnapshot.getDocuments().size()));
                           if(!documentSnapshot.isEmpty())
                           {
                               MainActivity.user = documentSnapshot.getDocuments().get(0).toObject(User.class);
                               if(!MainActivity.user.getRole().equals("Guest"))
                               {
                                   getActivity().finish();
-                                  Intent i = new Intent(getContext(), AdminActivity.class);
-                                  getContext().startActivity(i);
+                                  Intent i;
+                                  if(MainActivity.user.getRole().equals("Admin")) {
+                                      i = new Intent(getContext(), AdminActivity.class);
+                                      getContext().startActivity(i);
+                                  }
+                                  else if(MainActivity.user.getRole().equals("Librarian"))
+                                  {
+                                      i = new Intent(getContext(), LibrarianActivity.class);
+                                      getContext().startActivity(i);
+                                  }
                               }
                               else
                               {

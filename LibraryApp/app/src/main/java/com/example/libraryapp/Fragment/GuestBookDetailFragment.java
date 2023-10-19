@@ -17,8 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.example.libraryapp.Model.BookOffline;
 import com.example.libraryapp.R;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,7 +38,9 @@ public class GuestBookDetailFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ImageView bgimg;
+    private Bundle b;
+    private ImageView bgimg,bookimg;
+    private TextView txtquantity,txtsummary,txttitle;
 
     public GuestBookDetailFragment() {
         // Required empty public constructor
@@ -83,12 +88,22 @@ public class GuestBookDetailFragment extends Fragment {
 
     private void initView(View view)
     {
+        b = this.getArguments();
+        BookOffline bookOffline = (BookOffline)b.getSerializable("book");
+
         bgimg = view.findViewById(R.id.fragguestbookdetail_bgimg);
+        bookimg = view.findViewById(R.id.fragguestbookdetail_bookimg);
+        txtquantity = view.findViewById(R.id.fragguestbookdetail_remainquantity);
+        txtsummary = view.findViewById(R.id.fragguestbookdetail_summarytxt);
+        txttitle = view.findViewById(R.id.fragguestbookdetail_booktitle);
 
-        /*
-            bgimg.setRenderEffect(RenderEffect.createBlurEffect(
-                    50.0f, 50.0f, Shader.TileMode.MIRROR
-            ));*/
-
+        if(bookOffline.getImg_url() != null)
+        {
+            Picasso.get().load(bookOffline.getImg_url()).into(bgimg);
+            Picasso.get().load(bookOffline.getImg_url()).into(bookimg);
+        }
+        txttitle.setText(bookOffline.getName());
+        txtsummary.setText(bookOffline.getSummary());
+        txtquantity.setText(Integer.toString(bookOffline.getRemain_quantity()));
     }
 }
