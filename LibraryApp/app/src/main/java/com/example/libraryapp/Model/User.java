@@ -1,9 +1,12 @@
 package com.example.libraryapp.Model;
 
+import com.google.firebase.Timestamp;
+
 public class User {
-    private int id;
+    private String id;
     private String loginname,username,email,password,role,avatar;
     private boolean isMale;
+    private Timestamp add_date;
 
     public User() {
     }
@@ -14,7 +17,7 @@ public class User {
         this.avatar = avatar;
     }
 
-    public User(int id, String loginname, String username, String email, String password, String role, String avatar, boolean isMale) {
+    public User(String id, String loginname, String username, String email, String password, String role, String avatar, boolean isMale,Timestamp add_date) {
         this.id = id;
         this.loginname = loginname;
         this.username = username;
@@ -23,13 +26,22 @@ public class User {
         this.role = role;
         this.avatar = avatar;
         this.isMale = isMale;
+        this.add_date = add_date;
     }
 
-    public int getId() {
+    public Timestamp getAdd_date() {
+        return add_date;
+    }
+
+    public void setAdd_date(Timestamp add_date) {
+        this.add_date = add_date;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

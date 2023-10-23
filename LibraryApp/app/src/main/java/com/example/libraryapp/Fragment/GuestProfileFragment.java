@@ -123,6 +123,7 @@ public class GuestProfileFragment extends Fragment {
             logoutbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    MainActivity.user = null;
                     getActivity().finish();
                     getContext().startActivity(new Intent(getContext(), MainActivity.class));
                 }
@@ -165,6 +166,13 @@ public class GuestProfileFragment extends Fragment {
                               else
                               {
                                   login = true;
+                                  logoutbtn.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View v) {
+                                          getActivity().finish();
+                                          getContext().startActivity(new Intent(getContext(), MainActivity.class));
+                                      }
+                                  });
                                   useravatar.setImageResource(getResources().getIdentifier(MainActivity.user.getAvatar(),
                                           "drawable",getContext().getPackageName()));
                                   usernametxt.setVisibility(View.VISIBLE);

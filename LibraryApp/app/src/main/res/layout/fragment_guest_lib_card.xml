@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/pink_bg"
+    android:background="@drawable/bg4"
     tools:context=".Fragment.GuestLibCardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +27,7 @@
             android:paddingBottom="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:backgroundTint="@color/pas_pink"
+            android:backgroundTint="@color/pas_purple"
             android:background="@drawable/book_bg"
             android:id="@+id/fragguestlib_libcard"
             android:layout_marginTop="10dp"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:textColor="@color/high_pink"
+                android:textColor="@color/high_blue"
                 android:id="@+id/fragguestlib_libcardtitle"
                 android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
@@ -74,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
             <TextView
-                android:textColor="@color/high_pink"
+                android:textColor="@color/high_blue"
                 android:id="@+id/fragguestlib_libcardfirstname"
                 android:fontFamily="@font/linotteregular"
                 android:textSize="20sp"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
                 <TextView
-                    android:textColor="@color/high_pink"
+                    android:textColor="@color/high_blue"
                     android:layout_marginLeft="15dp"
                     android:id="@+id/fragguestlib_libcardlastname"
                     android:fontFamily="@font/linotteregular"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"/>
                     </LinearLayout>
                 <TextView
-                    android:textColor="@color/high_pink"
+                    android:textColor="@color/high_blue"
                     android:background="@color/low_pink"
                     android:layout_marginTop="10dp"
                     android:id="@+id/fragguestlib_libcardaddress"
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:textColor="@color/high_pink"
+                    android:textColor="@color/high_blue"
                     android:background="@color/low_pink"
                     android:layout_marginTop="10dp"
                     android:id="@+id/fragguestlib_libcarddob"
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:textColor="@color/high_pink"
+                    android:textColor="@color/high_blue"
                     android:background="@color/low_pink"
                     android:layout_marginTop="10dp"
                     android:id="@+id/fragguestlib_libcardexd"
@@ -122,7 +122,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:textColor="@color/high_pink"
+                    android:textColor="@color/high_blue"
                     android:background="@color/low_pink"
                     android:layout_marginTop="10dp"
                     android:id="@+id/fragguestlib_libcardid"
@@ -192,6 +192,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
         android:id="@+id/fragguestlib_nothavelibcard"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -216,12 +217,12 @@
         <LinearLayout
             app:layout_constraintTop_toTopOf="parent"
             android:id="@+id/fragguestlib_nameedt"
-
             android:orientation="horizontal"
             android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/fragguestlib_firstname"
                 android:fontFamily="@font/linotteregular"
                 android:textSize="20sp"
                 android:layout_margin="10dp"
@@ -232,6 +233,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id="@+id/fragguestlib_lastname"
                 android:fontFamily="@font/linotteregular"
                 android:textSize="20sp"
                 android:layout_margin="10dp"
@@ -285,6 +287,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:id="@+id/fragguestlib_day"
                 android:fontFamily="@font/linotteregular"
                 android:textSize="18sp"
                 android:layout_margin="10dp"
@@ -295,6 +298,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id="@+id/fragguestlib_month"
                 android:fontFamily="@font/linotteregular"
                 android:textSize="18sp"
                 android:layout_margin="10dp"
@@ -305,6 +309,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
             <EditText
+                android:id="@+id/fragguestlib_year"
                 android:fontFamily="@font/linotteregular"
                 android:textSize="18sp"
                 android:layout_margin="10dp"
@@ -316,6 +321,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
+            android:clickable="true"
             android:id="@+id/fragguestlib_regbtn"
             android:fontFamily="@font/poppinsbold"
             android:textColor="@color/white"
@@ -334,6 +340,78 @@
             android:layout_height="wrap_content"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragguestlib_notlogin"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/fragguestlib_imagewarning"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/booklibwarning"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline3" />
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:elevation="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
+          <TextView
+              android:layout_marginTop="30dp"
+              android:layout_gravity="center"
+              android:fontFamily="@font/linottebold"
+              android:textSize="25sp"
+              android:text="Bạn chưa đăng nhập tài khoản"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+            <TextView
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="Bạn hãy đăng nhập hoặc đăng ký tài khoản để dùng
+chức năng này nhé !"
+                android:fontFamily="@font/linotteregular"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <RelativeLayout
+                android:padding="20dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:fontFamily="@font/linottebold"
+                    android:backgroundTint="@color/pas_pink"
+                    android:background="@drawable/round_borrowbtn_in_detailbook"
+                    android:layout_alignParentLeft="true"
+                    android:text="Đăng nhập"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:fontFamily="@font/linottebold"
+                    android:backgroundTint="@color/pas_purple"
+                    android:background="@drawable/round_heartbtn_in_detailbook"
+                    android:layout_alignParentRight="true"
+                    android:text="Đăng ký"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="109dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

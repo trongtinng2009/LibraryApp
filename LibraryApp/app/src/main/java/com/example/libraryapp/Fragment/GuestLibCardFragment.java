@@ -7,8 +7,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +19,26 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.libraryapp.MainActivity;
+import com.example.libraryapp.Model.Libcard;
 import com.example.libraryapp.R;
+import com.example.libraryapp.Utils.Utils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +55,13 @@ public class GuestLibCardFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    private int haveCard;
+    private ConstraintLayout havecard,nothavecard,notlogin;
+    private Button signuplibcardbtn;
+    private EditText edtfirstname,edtlastname,edtphone,edtaddress
+            ,edtday,edtmonth,edtyear;
+    private CollectionReference libcardcollection = MainActivity.db.collection("Libcard")
+            , usercollection = MainActivity.db.collection("User");
     public GuestLibCardFragment() {
         // Required empty public constructor
     }
@@ -78,48 +103,210 @@ public class GuestLibCardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView(view);
         if(MainActivity.user != null)
         {
-        showPopupRegLibcard();}
+           setCardState();
+        }
+        else
+        {
+            handleNotLogin();
+        }
     }
     private void initView(View view)
     {
-
+         havecard = view.findViewById(R.id.fragguestlib_havelibcard);
+         nothavecard = view.findViewById(R.id.fragguestlib_nothavelibcard);
+         notlogin = view.findViewById(R.id.fragguestlib_notlogin);
+         signuplibcardbtn = view.findViewById(R.id.fragguestlib_regbtn);
+         edtaddress = view.findViewById(R.id.fragguestlib_address);
+         edtday = view.findViewById(R.id.fragguestlib_day);
+         edtfirstname = view.findViewById(R.id.fragguestlib_firstname);
+         edtlastname = view.findViewById(R.id.fragguestlib_lastname);
+         edtmonth = view.findViewById(R.id.fragguestlib_month);
+         edtyear = view.findViewById(R.id.fragguestlib_year);
+         edtphone = view.findViewById(R.id.fragguestlib_phone);
     }
-    private void showPopupRegLibcard()
+    private void showPopup(int idimg,String titletext,String maintext)
     {
-        Dialog dialog = new Dialog(getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.reg_libcard_popup);
-        Window window = dialog.getWindow();
-        if(window == null)
-        {
-            return;
-        }
-
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        WindowManager.LayoutParams windowattributes = window.getAttributes();
-        windowattributes.gravity = Gravity.CENTER;
-        window.setAttributes(windowattributes);
-        dialog.setCancelable(false);
+        Dialog dialog = Utils.getPopup(getContext(),R.layout.reg_libcard_popup);
 
         ImageButton cancelbtn = dialog.findViewById(R.id.reg_libcard_popup_cancel);
-        Button acceptbtn = dialog.findViewById(R.id.reg_libcard_popup_accept);
+        ImageView img = dialog.findViewById(R.id.reg_libcard_popup_img);
+        img.setImageResource(idimg);
+        TextView title = dialog.findViewById(R.id.reg_libcard_popup_title),txt = dialog.findViewById(R.id.reg_libcard_popup_txt);
+        title.setText(titletext);
+        txt.setText(maintext);
+
         cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
+        Button acceptbtn = dialog.findViewById(R.id.reg_libcard_popup_accept);
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(MainActivity.user != null)
+                {
+                 handleNotHaveCard();
+                }
                 dialog.dismiss();
             }
         });
-
         dialog.show();
+    }
+    private void setCardState()
+    {
+        DocumentReference userRef = usercollection.document(MainActivity.user.getId());
+        Query query = libcardcollection.whereEqualTo("user",userRef);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    int size = task.getResult().getDocuments().size();
+                    if(size == 1)
+                    {
+                        Libcard libcard = task.getResult().getDocuments().get(0).toObject(Libcard.class);
+                        haveCard = libcard.getCardstate();
+                        if(haveCard == 1)
+                        {
+                            handleNotHaveCard();
+                            handleWaitForAccept();
+                            Date dob = libcard.getDob().toDate();
+                            edtaddress.setText(libcard.getAddress());
+                            edtday.setText(Integer.toString(dob.getDate()));
+                            edtmonth.setText(Integer.toString(dob.getMonth()+1));
+                            edtyear.setText(Integer.toString(dob.getYear()+1900));
+                            edtfirstname.setText(libcard.getFirstname());
+                            edtlastname.setText(libcard.getLastname());
+                            edtphone.setText(libcard.getPhonenum());
+                        }
+                    }
+                    else
+                    {
+                        haveCard = 0;
+                        showPopup(getContext().getResources().getIdentifier("libcardpopup",
+                                        "drawable",getContext().getPackageName()),
+                                "Có vẻ bạn chưa có thẻ thư viện."
+                                ,"Tạo thẻ thư viện để dùng được nhiều tính năng hơn nhé" );
+                    }
+                }
+            }
+        });
+    }
+    private void handleNotHaveCard()
+    {
+        nothavecard.setVisibility(View.VISIBLE);
+        havecard.setVisibility(View.GONE);
+        notlogin.setVisibility(View.GONE);
+        handleSignupLibcard();
+    }
+    private void handleHaveCard()
+    {
+        nothavecard.setVisibility(View.GONE);
+        havecard.setVisibility(View.VISIBLE);
+        notlogin.setVisibility(View.GONE);
+        handleSignupLibcard();
+    }
+    private void handleNotLogin()
+    {
+        nothavecard.setVisibility(View.GONE);
+        havecard.setVisibility(View.GONE);
+        notlogin.setVisibility(View.VISIBLE);
+        handleSignupLibcard();
+    }
+    private void handleWaitForAccept()
+    {
+        /*edtyear.setEnabled(false);edtlastname.setEnabled(false);
+        edtphone.setEnabled(false);edtfirstname.setEnabled(false);
+        edtmonth.setEnabled(false); edtday.setEnabled(false);
+        edtaddress.setEnabled(false);*/
+
+        edtphone.setFocusable(false);
+        edtphone.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        edtyear.setFocusable(false);
+        edtyear.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        edtmonth.setFocusable(false);
+        edtmonth.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        edtlastname.setFocusable(false);
+        edtlastname.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        edtfirstname.setFocusable(false);
+        edtfirstname.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        edtday.setFocusable(false);
+        edtday.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        edtaddress.setFocusable(false);
+        edtaddress.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
+
+        signuplibcardbtn.setEnabled(false);
+        signuplibcardbtn.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.med_grey));
+    }
+    private void handleSignupLibcard()
+    {
+        signuplibcardbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(edtaddress.getText() == null || edtday.getText() == null ||
+                edtfirstname.getText() == null || edtlastname.getText() == null
+               || edtmonth.getText() == null || edtphone.getText() == null
+               || edtyear.getText() == null)
+                {
+                    Toast.makeText(getContext(),"Let's type all the info",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    String randomid = Utils.getRandomId("LIB",9998);
+                    String userid = MainActivity.user.getId();
+                    String userimg = MainActivity.user.getAvatar();
+                    DocumentReference userReference = usercollection.document(userid);
+                    Query query = libcardcollection.whereEqualTo("id",randomid);
+                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful())
+                            {
+                                int docsize = task.getResult().getDocuments().size();
+                                if(docsize > 0)
+                                {
+                                    return;
+                                }
+                                else
+                                {
+                                    Timestamp dob = Utils.textToTimestamp(
+                                            Integer.parseInt(edtday.getText().toString()),
+                                            Integer.parseInt(edtmonth.getText().toString()),
+                                            Integer.parseInt(edtyear.getText().toString()));
+                                    Timestamp currentdate = Timestamp.now();
+                                    Libcard libcard = new Libcard(randomid,edtfirstname.getText().toString()
+                                    ,edtlastname.getText().toString(),edtaddress.getText().toString(),
+                                            edtphone.getText().toString(),userimg,dob,currentdate,
+                                            null,userReference,Libcard.CardState.REQUESTING.value
+                                            );
+                                    libcardcollection.document(randomid).set(libcard);
+                                    showPopup(getContext().getResources().
+                                            getIdentifier("booklibwarning","drawable",getContext().getPackageName())
+                                    ,"Gửi yêu cầu thành công",
+                                            "Bạn đã gửi yêu cầu đăng ký thẻ thư viện thành công\n " +
+                                                    "Vui lòng chờ đợi thủ thư xét duyệt yêu cầu nhé !");
+                                    handleWaitForAccept();
+                                }
+                            }
+                            else
+                            {
+                                Log.i("libcardrequesterror","error");
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }

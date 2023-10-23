@@ -23,8 +23,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/libcardpopup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"/>
     <TextView
         android:textColor="@color/high_blue"
         android:layout_marginTop="16dp"
@@ -43,8 +44,7 @@
         android:fontFamily="@font/linotteregular"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Tạo thẻ thư viện để dùng được nhiều tính năng
-hơn nhé."
+        android:text="Tạo thẻ thư viện để dùng được nhiều tính năng hơn nhé."
         app:layout_constraintTop_toBottomOf="@id/reg_libcard_popup_title"
         app:layout_constraintRight_toRightOf="@id/reg_libcard_popup_title"
         app:layout_constraintLeft_toLeftOf="@id/reg_libcard_popup_title"

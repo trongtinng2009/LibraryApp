@@ -22,7 +22,10 @@ import com.example.libraryapp.R;
 
 public class LibrarianActivity extends AppCompatActivity {
 
-    FragmentManager fragmentManager;
+    public static FragmentManager fragmentManager,fragmentManager2,fragmentManager3,fragmentManager4;
+    private LibrarianBookFragment librarianBookFragment;
+    private LibrarianCardFragment librarianCardFragment;
+    private LibrarianProfileFragment librarianProfileFragment;
     enum SelectedBtn
     {
         BOOK(1),LIBCARD(2),SEND(3),PROFILE(4);
@@ -42,8 +45,12 @@ public class LibrarianActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_librarian);
         fragmentManager = getSupportFragmentManager();
+        fragmentManager2 = getSupportFragmentManager();
+        fragmentManager3 = getSupportFragmentManager();
+        fragmentManager4 = getSupportFragmentManager();
         initView();
         handleSelected();
+        setFragment(fragmentManager,librarianBookFragment);
     }
     private void initView()
     {
@@ -61,8 +68,12 @@ public class LibrarianActivity extends AppCompatActivity {
         txtcard = findViewById(R.id.libact_textlibcard);
         txtsend = findViewById(R.id.libact_textsend);
         txtprofile = findViewById(R.id.libact_textprofile);
+
+        librarianBookFragment = new LibrarianBookFragment();
+        librarianCardFragment = new LibrarianCardFragment();
+        librarianProfileFragment = new LibrarianProfileFragment();
     }
-    private void setFragment(Fragment fragment)
+    private void setFragment(FragmentManager fragmentManager,Fragment fragment)
     {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left);
@@ -94,7 +105,7 @@ public class LibrarianActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(selectedbtn != SelectedBtn.BOOK.value)
                 {
-                    setFragment(new LibrarianBookFragment());
+                    setFragment(fragmentManager,librarianBookFragment);
                     idenBtn(textViews[0],imageViews[0],linearLayouts[0],drawables[0],bgcolor[0],
                             SelectedBtn.BOOK.value);
                 }
@@ -105,7 +116,7 @@ public class LibrarianActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(selectedbtn != SelectedBtn.LIBCARD.value)
                 {
-                    setFragment(new LibrarianCardFragment());
+                    setFragment(fragmentManager2,librarianCardFragment);
                     idenBtn(textViews[1],imageViews[1],linearLayouts[1],drawables[1],bgcolor[1],
                             SelectedBtn.LIBCARD.value);
                 }
@@ -126,7 +137,7 @@ public class LibrarianActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(selectedbtn != SelectedBtn.PROFILE.value)
                 {
-                    setFragment(new LibrarianProfileFragment());
+                    setFragment(fragmentManager4,librarianProfileFragment);
                     idenBtn(textViews[3],imageViews[3],linearLayouts[3],drawables[3],bgcolor[3],
                             SelectedBtn.PROFILE.value);
                 }

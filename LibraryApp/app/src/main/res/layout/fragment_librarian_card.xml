@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/profilebg"
+    android:background="@drawable/bg6"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.LibrarianCardFragment">
@@ -33,7 +33,7 @@
                     android:background="@drawable/round_btn"
                     android:gravity="center"
                     android:layout_margin="20dp"
-                    android:id="@+id/fraglibbook_layoutbookoffline"
+                    android:id="@+id/fraglibcard_layoutviewcard"
                     android:orientation="vertical"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content">
@@ -56,7 +56,7 @@
                     android:background="@drawable/round_btn"
                     android:gravity="center"
                     android:layout_margin="20dp"
-                    android:id="@+id/fraglibbook_layoutbookonline"
+                    android:id="@+id/fraglibcard_layoutcrecard"
                     android:orientation="vertical"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content">
@@ -82,7 +82,7 @@
                     android:background="@drawable/round_btn"
                     android:gravity="center"
                     android:layout_margin="20dp"
-                    android:id="@+id/fraglibbook_layoutbookborrow"
+                    android:id="@+id/fraglibcard_layoutconcard"
                     android:orientation="vertical"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content">

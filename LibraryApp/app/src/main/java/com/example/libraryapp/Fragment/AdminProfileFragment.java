@@ -73,6 +73,7 @@ public class AdminProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView(view);
     }
     private void initView(View view)
     {
