@@ -60,6 +60,11 @@ public class GuestLibCardFragment extends Fragment {
     private Button signuplibcardbtn;
     private EditText edtfirstname,edtlastname,edtphone,edtaddress
             ,edtday,edtmonth,edtyear;
+    private Libcard userlibcard;
+
+    private TextView txtlcfirstname,txtlclastname,
+    txtlcaddress,txtlcdob,txtlcexp,txtlcid;
+    private ImageView imglibcard;
     private CollectionReference libcardcollection = MainActivity.db.collection("Libcard")
             , usercollection = MainActivity.db.collection("User");
     public GuestLibCardFragment() {
@@ -126,6 +131,28 @@ public class GuestLibCardFragment extends Fragment {
          edtmonth = view.findViewById(R.id.fragguestlib_month);
          edtyear = view.findViewById(R.id.fragguestlib_year);
          edtphone = view.findViewById(R.id.fragguestlib_phone);
+
+         txtlcaddress = view.findViewById(R.id.fragguestlib_libcardaddress);
+         txtlcdob = view.findViewById(R.id.fragguestlib_libcarddob);
+         txtlcexp = view.findViewById(R.id.fragguestlib_libcardexd);
+         txtlcid = view.findViewById(R.id.fragguestlib_libcardid);
+         txtlcfirstname = view.findViewById(R.id.fragguestlib_libcardfirstname);
+         txtlclastname = view.findViewById(R.id.fragguestlib_libcardlastname);
+         imglibcard = view.findViewById(R.id.fragguestlib_libcardimg);
+    }
+    private void setContentHaveCard()
+    {
+        Date exp_date = userlibcard.getExp_date().toDate();
+        Date dob = userlibcard.getDob().toDate();
+       txtlclastname.setText("Họ : " + userlibcard.getLastname());
+       txtlcfirstname.setText("Tên : " + userlibcard.getFirstname());
+       txtlcid.setText("Mã thẻ : " + userlibcard.getId());
+       txtlcexp.setText("Có giá trị đến : " + Utils.dateToString(exp_date));
+       txtlcdob.setText("Ngày sinh : " + Utils.dateToString(dob));
+       txtlcaddress.setText("Địa chỉ : " + userlibcard.getAddress());
+
+       imglibcard.setImageResource(getContext().getResources().getIdentifier(userlibcard.getImage_url(),
+               "drawable",getContext().getPackageName()));
     }
     private void showPopup(int idimg,String titletext,String maintext)
     {
@@ -148,9 +175,23 @@ public class GuestLibCardFragment extends Fragment {
         acceptbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(MainActivity.user != null)
+                if(haveCard == 0)
                 {
                  handleNotHaveCard();
+                }
+                else if(haveCard == 2)
+                {
+                    handleHaveCard();
+                    libcardcollection.document(userlibcard.getId()).
+                            update("cardstate",Libcard.CardState.ACCEPTED.value).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful())
+                                    {
+                                        dialog.dismiss();
+                                    }
+                                }
+                            });
                 }
                 dialog.dismiss();
             }
@@ -183,6 +224,22 @@ public class GuestLibCardFragment extends Fragment {
                             edtfirstname.setText(libcard.getFirstname());
                             edtlastname.setText(libcard.getLastname());
                             edtphone.setText(libcard.getPhonenum());
+                        }
+                        else if(haveCard == 2)
+                        {
+                            userlibcard = libcard;
+                            handleHaveCard();
+                            setContentHaveCard();
+                            showPopup(getContext().getResources().getIdentifier("messagecute","drawable",
+                                    getContext().getPackageName()),"Bạn đã được xét duyệt",
+                                    "Yêu cầu đăng ký thẻ thư viện của bạn đã được xét duyệt\n " +
+                                            "Xin cảm ơn vì đã sử dụng dịch vụ của chúng tôi!");
+                        }
+                        else if(haveCard == 3)
+                        {
+                            userlibcard = libcard;
+                            handleHaveCard();
+                            setContentHaveCard();
                         }
                     }
                     else
@@ -220,11 +277,6 @@ public class GuestLibCardFragment extends Fragment {
     }
     private void handleWaitForAccept()
     {
-        /*edtyear.setEnabled(false);edtlastname.setEnabled(false);
-        edtphone.setEnabled(false);edtfirstname.setEnabled(false);
-        edtmonth.setEnabled(false); edtday.setEnabled(false);
-        edtaddress.setEnabled(false);*/
-
         edtphone.setFocusable(false);
         edtphone.setBackgroundTintList(ContextCompat.getColorStateList(getContext(),R.color.low_grey));
 
@@ -288,7 +340,7 @@ public class GuestLibCardFragment extends Fragment {
                                     Libcard libcard = new Libcard(randomid,edtfirstname.getText().toString()
                                     ,edtlastname.getText().toString(),edtaddress.getText().toString(),
                                             edtphone.getText().toString(),userimg,dob,currentdate,
-                                            null,userReference,Libcard.CardState.REQUESTING.value
+                                            null,userReference,Libcard.CardState.REQUESTING.value,null
                                             );
                                     libcardcollection.document(randomid).set(libcard);
                                     showPopup(getContext().getResources().

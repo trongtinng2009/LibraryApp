@@ -82,6 +82,7 @@ public class LibrarianProfileFragment extends Fragment {
         logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                 MainActivity.user = null;
                  getActivity().finish();
                  getActivity().startActivity(new Intent(getContext(), MainActivity.class));
             }

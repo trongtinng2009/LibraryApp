@@ -81,6 +81,7 @@ public class AdminProfileFragment extends Fragment {
         logoutbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.user = null;
                 getActivity().finish();
                 getContext().startActivity(new Intent(getContext(), MainActivity.class));
             }
