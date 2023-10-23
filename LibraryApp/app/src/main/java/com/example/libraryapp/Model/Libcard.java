@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference;
 import java.io.Serializable;
 
 public class Libcard implements Serializable {
+    //vinh
     private String id,firstname,lastname,address,phonenum,image_url;
     private Timestamp dob,request_date,acc_date;
     private DocumentReference user;
