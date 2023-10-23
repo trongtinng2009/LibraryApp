@@ -11,12 +11,11 @@ public class Libcard implements Serializable {
     private Timestamp dob,request_date,acc_date;
     private DocumentReference user;
     private int cardstate;
-    public static enum CardState
-    {
-        REQUESTING(1),JUSTACCEPTED(2),ACCEPTED(3);
+    public static enum CardState {
+        REQUESTING(1), JUSTACCEPTED(2), ACCEPTED(3);
         public int value;
-        private CardState(int value)
-        {
+
+        private CardState(int value) {
             this.value = value;
         }
     }
