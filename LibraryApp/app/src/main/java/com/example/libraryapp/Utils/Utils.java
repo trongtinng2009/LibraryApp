@@ -22,12 +22,11 @@ import java.util.Date;
 import java.util.Random;
 
 public class Utils {
-    public static String getRandomId(String prefix,int bound)
-    {
+    public static String getRandomId(String prefix,int bound) {
         Random random = new Random();
         int id = random.nextInt(bound);
         String randomid = prefix + id;
-        return  randomid + 1;
+        return randomid + 1;
     }
     public static Timestamp textToTimestamp(int day,int month,int year)
     {
